@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1543411902686.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1684801916",
+    "id" : "F1E68983",
+    "lastKnownWriteTime" : 1543418937,
+    "last_content_update" : 1543418937897,
+    "path" : "/media/aemaulana/Data/Aditya/Kuliah/Semester 5/AI/TUPRO 3/KNN/knn.R",
+    "project_path" : "knn.R",
+    "properties" : {
+        "cursorPosition" : "23,37",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

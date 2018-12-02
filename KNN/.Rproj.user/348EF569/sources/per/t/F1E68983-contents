@@ -1,0 +1,24 @@
+#source("fixed.R")
+options(max.print = 10000)
+test <- read.csv("DataTest_Tugas3_AI.csv", sep = ",")
+train <- read.csv("DataTrain_Tugas3_AI.csv", sep = ",")
+
+optimum.K <- c(14)
+### Solving real test data
+rowclass <- c()
+for(j in 1:nrow(test)){
+  rowvalue <- data.frame("dist" = distance(test[j,], train), "Y" = train$Y)
+  rowvalue <- rowvalue[order(rowvalue$dist),]
+  class.predict <- as.data.frame(table(rowvalue[1:optimum.K,]$Y))
+  class.predict <- class.predict[order(class.predict$Freq, decreasing = TRUE),]
+
+  rowclass <- c(rowclass, as.numeric(as.character(class.predict$Var1[1])))
+}
+
+ test$Y <- rowclass
+# write.table(test$Y, "TebakanTugas3-14EU.csv", row.names = FALSE, col.names = FALSE)
+
+# result.x <- read.csv("TebakanTugas3.csv", header=FALSE)
+# result.y <- read.csv("TebakanTugas3-8K.csv", header=TRUE)
+# equal <- result.x == result.y
+# print(length(equal[equal == TRUE]))

@@ -1,0 +1,67 @@
+test <- read.csv("DataTest_Tugas3_AI.csv", sep = ",")
+train <- read.csv("DataTrain_Permute.csv")
+train < train[sample(nrow(train)), ]
+
+distance <- function(p, q){
+  # Euclidean Distance
+  ((p$X1-q$X1)^2 + (p$X2-q$X2)^2 + (p$X3-q$X3)^2 +
+     (p$X4-q$X4)^2 + (p$X5-q$X5)^2) -> point
+  
+  # Manhattan Distance
+  # (abs(p$X1-q$X1)) + (abs(p$X2-q$X2)) + (abs(p$X3-q$X3)) +
+  #    (abs(p$X4-q$X4)) + (abs(p$X5-q$X5)) -> point
+  
+  return(sqrt(point))   
+}
+
+accuracy.calculate <- function(test, train, k){
+  rowclass <- c()
+  for(j in 1:nrow(test)){
+    rowvalue <- data.frame("dist" = distance(test[j,], train), "Y" = train$Y)
+    rowvalue <- rowvalue[order(rowvalue$dist),]
+    class.predict <- as.data.frame(table(rowvalue[1:k,]$Y))
+    class.predict <- class.predict[order(class.predict$Freq, decreasing = TRUE),]
+
+    rowclass <- c(rowclass, as.numeric(as.character(class.predict$Var1[1])))
+  }
+
+  acc <- rowclass == test$Y
+  return((length(acc[acc == TRUE]) / length(acc)) * 100)
+}
+
+
+## MAIN
+K <- 23
+FOLD <- 8
+SPLIT <- nrow(train) / FOLD
+result <- c()
+
+for(i in 1:FOLD){
+  cat('\nFOLD', i)
+  test.validation <- train[c((1 + SPLIT*(i-1)) : (SPLIT*i)),]
+  train.validation <- train[-c((1 + SPLIT*(i-1)) : (SPLIT*i)),]
+
+  accuracy.per.test <- c()
+  for(k in 1:K){
+    accuracy.per.test <-
+      c(accuracy.per.test, accuracy.calculate(test.validation, train.validation, k))
+  }
+
+  result <- rbind(result, accuracy.per.test)
+}
+
+colnames(result) <- 1:K
+
+result <- colSums(result) / nrow(result)
+print(result)
+
+print("Best Acc")
+print(as.numeric(names(result[result == max(result)])))
+cat("With ACC : ", result[result == max(result)])
+
+optimum.K <- as.numeric(names(result[result == max(result)]))
+optimum.K
+
+### Export result CSV
+#result$index <- train$Index
+#write.csv(result, "TebakTROS.csv")
