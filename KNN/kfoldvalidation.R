@@ -47,8 +47,6 @@ SPLIT <- nrow(train) / FOLD
 result <- c()
 
 for(i in 1:FOLD){
-  cat('\nFOLD', i)
-  
   # Ambil data test dan train baru untuk validasi dengan memilah index
   test.validation <- train[c((1 + SPLIT*(i-1)) : (SPLIT*i)),]
   train.validation <- train[-c((1 + SPLIT*(i-1)) : (SPLIT*i)),]
@@ -68,7 +66,7 @@ colnames(result) <- 1:K
 
 # Untuk seluruh K, hitung rata-rata akurasi dari seluruh lipatan
 result <- colSums(result) / nrow(result)
-print(result)
+result
 
 # Ambil K dengan akurasi terbaik
 optimum.K <- as.numeric(names(result[result == max(result)]))
